@@ -15,11 +15,6 @@ Dotenv.config({
 
 require('./db');
 
-var corsOptions = {
-    origin: 'https://babs-admin.netlify.app',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-  }
-
 App.use(Express.json());
 App.use(Express.urlencoded({
     extended: true
@@ -27,7 +22,7 @@ App.use(Express.urlencoded({
 
 const Port = process.env.PORT;
 
-App.use(cors(corsOptions));
+App.use(cors());
 
 App.use('/',AuthRoutes);
 App.use('/bill',TransactionRoutes);
