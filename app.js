@@ -2,7 +2,6 @@ const Express = require('express');
 const App = Express();
 const AuthRoutes = require('./routes/auth');
 const Dotenv = require('dotenv');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const TransactionRoutes = require('./routes/transaction');
 const SheetRoutes = require('./routes/sheet');
@@ -13,14 +12,22 @@ Dotenv.config({
     path: './.env'
 })
 
+
 require('./db');
 
+var corsOptions = {
+    origin: 'https://babs-admin.netlify.app',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
 
 App.use(Express.json());
+App.use(Express.urlencoded({
+    extended: true
+}));
 
 const Port = process.env.PORT;
 
-App.use(cors());
+App.use(cors(corsOptions));
 
 App.use('/',AuthRoutes);
 App.use('/bill',TransactionRoutes);
