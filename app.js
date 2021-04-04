@@ -15,10 +15,8 @@ Dotenv.config({
 
 require('./db');
 
-App.use(bodyParser.urlencoded({
-    extended: true
-}));
-App.use(bodyParser.json());
+
+App.use(Express.json());
 
 const Port = process.env.PORT;
 
