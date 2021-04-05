@@ -7,8 +7,8 @@ const SubjectSchema = new Schema({
         required: true
     },
     FullMarks:{
-        type: Number,
-        enum: [100,50],
+        type: String,
+        enum: [100,50,'Grade'],
         default: 100
     },
     Class:{

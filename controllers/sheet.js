@@ -1,5 +1,6 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const grade = require('../util/grade');
+const gradetoGPA = require('../util/gradetoGPA');
 const mpg = require('../util/mpg');
 const mpgString = require('../util/mpgString');
 
@@ -14,31 +15,38 @@ module.exports = {
 
             await doc.loadInfo();
             const data = req.body;
-            let sheetIndex=0;
-            if(data.class==='Nursery'){
-                
+            console.log(data)
+            let sheetIndex = 0;
+            if (data.class === 'Nursery') {
+
             }
-            else if(data.class==='KG'){
-                sheetIndex =1;
-            }else{
+            else if (data.class === 'KG') {
+                sheetIndex = 1;
+            } else {
                 sheetIndex = 1 + Number(data.class)
             }
-            
-            
+
+
             const sheet = doc.sheetsByIndex[sheetIndex]
             const fullMarks = data.fullMarks;
             const subjectsArray = Object.keys(fullMarks);
             const fullMarksArray = Object.values(fullMarks);
             let obtainedMarks = [];
-            subjectsArray.map((subject) => {
-                obtainedMarks.push(data.subjects[subject])
+            subjectsArray.map((subject, index) => {
+                if (fullMarksArray[index] === 'Grade' && data.subjects[subject] === 0) {
+                    obtainedMarks.push('A+')
+                }
+                else {
+                    obtainedMarks.push(data.subjects[subject])
+                }
             })
             let totalObtainedMarks = 0;
-            obtainedMarks.map(mark => {
-                totalObtainedMarks = totalObtainedMarks + Number(mark);
+            obtainedMarks.map((mark, index) => {
+                if (fullMarksArray[index] !== 'Grade') {
+                    totalObtainedMarks = totalObtainedMarks + Number(mark);
+                }
+
             })
-            console.log(totalObtainedMarks);
-            console.log(obtainedMarks);
             let totalMarks = 0;
             subjectsArray.map((subject) => {
                 if (fullMarks[subject] === 100) {
@@ -48,12 +56,12 @@ module.exports = {
                 }
             })
             totalMarks = totalMarks * 100;
-            const percentage =(( totalObtainedMarks/totalMarks)*100).toFixed(2);
+            const percentage = ((totalObtainedMarks / totalMarks) * 100).toFixed(2);
             // const Total = Number(result.Nepali) + Number(result.Wonder) + Number(result.Social) + Number(result.Math) + Number(result.Science) + Number(result.Grammar)
             // const percentage = ((Total / 600) * 100).toFixed(1);
             const avgGrade = `       ${grade(percentage)}`;
 
-            
+
             // result.Wonder = mpgString(mpg(result.Wonder, 100));
             // result.Nepali = mpgString(mpg(result.Nepali, 100));
             // result.Social = mpgString(mpg(result.Social, 100));
@@ -61,8 +69,16 @@ module.exports = {
             // result.Science = mpgString(mpg(result.Science, 100));
             // result.Grammar = mpgString(mpg(result.Grammar, 100))
             const obj = {}
-            subjectsArray.map((subject,index)=>{
-                obj[subject] = mpgString(mpg(obtainedMarks[index],fullMarksArray[index]))
+            subjectsArray.map((subject, index) => {
+                if(fullMarksArray[index]!=='Grade'){
+                    obj[subject] = mpgString(mpg(obtainedMarks[index], fullMarksArray[index]))
+                }else{
+                    obj[subject] = mpgString({
+                        obtainedMarks: '',
+                        gradePoint: gradetoGPA(obtainedMarks[index]),
+                        grade: obtainedMarks[index]
+                    })
+                }
             })
             obj.Roll = data.Roll;
             obj.Name = data.Name;
