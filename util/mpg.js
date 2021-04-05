@@ -1,6 +1,7 @@
 module.exports = (obtainedMarks, fullMarks)=>{
     var result,gradePoint,grade;
     var obtainedMarks = Number(obtainedMarks);
+    var fullMarks = Number(fullMarks);
     if(fullMarks===100){
         if(obtainedMarks<=100 && obtainedMarks>=91){
             gradePoint = '4.0';
