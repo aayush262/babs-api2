@@ -49,9 +49,9 @@ module.exports = {
             })
             let totalMarks = 0;
             subjectsArray.map((subject) => {
-                if (fullMarks[subject] === 100) {
+                if (fullMarks[subject] === '100') {
                     totalMarks = totalMarks + 1;
-                } else {
+                } else if(fullMarks[subject] === '50') {
                     totalMarks = totalMarks + 0.5
                 }
             })
