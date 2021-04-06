@@ -5,6 +5,10 @@ const resultSchema = new Schema({
     data:{
         type: Object,
         required: true
+    },
+    class: {
+        type: String,
+        required: true
     }
    
 })

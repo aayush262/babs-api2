@@ -55,6 +55,7 @@ module.exports = {
         const AvgGPA = (TotalGPA / subjectsArray.length).toFixed(1);
         const AvgGrade = grade(percentage);
         const newResult = new ResultModel({});
+        newResult.class= data.class
         newResult.data = {
             term: data.term,
             class: data.class,
@@ -102,5 +103,17 @@ module.exports = {
                 data: result
             })
         }).catch(e => next(e))
+    },
+    getResultByClass: async(req,res,next)=>{
+       
+        try{
+            const level = req.params.class
+            const data =  await ResultModel.find({
+                class: `${level}`
+            })
+            res.json(data)
+        }catch(e){
+            next(e)
+        }
     }
 }
