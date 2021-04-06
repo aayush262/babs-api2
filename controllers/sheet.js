@@ -71,7 +71,7 @@ module.exports = {
                     obj[subject] = mpgString(mpg(obtainedMarks[index], fullMarksArray[index]))
                 }else{
                     obj[subject] = mpgString({
-                        obtainedMarks: '',
+                        obtainedMarks: `   `,
                         gradePoint: gradetoGPA(obtainedMarks[index]),
                         grade: obtainedMarks[index]
                     })
