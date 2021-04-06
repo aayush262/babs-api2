@@ -7,6 +7,7 @@ const TransactionRoutes = require('./routes/transaction');
 const SheetRoutes = require('./routes/sheet');
 const ResultRoutes = require('./routes/result');
 const SubjectRoutes = require('./routes/subject');
+const marksheetRoutes = require('./routes/marksheet');
 
 Dotenv.config({
     path: './.env'
@@ -29,6 +30,7 @@ App.use('/bill',TransactionRoutes);
 App.use('/sheet',SheetRoutes);
 App.use('/result',ResultRoutes);
 App.use('/subject',SubjectRoutes);
+App.use('/marksheet',marksheetRoutes);
 
 App.use((err,req,res,next)=>{
     res.status(404).json({

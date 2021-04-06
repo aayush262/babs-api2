@@ -3,6 +3,7 @@ const grade = require('../util/grade');
 const gradetoGPA = require('../util/gradetoGPA');
 const mpg = require('../util/mpg');
 const mpgString = require('../util/mpgString');
+const marksheetModel = require('./../model/marksheet');
 
 module.exports = {
     postSheet: async (req, res, next) => {
@@ -15,7 +16,7 @@ module.exports = {
 
             await doc.loadInfo();
             const data = req.body;
-            console.log(data)
+         
             let sheetIndex = 0;
             if (data.class === 'Nursery') {
 
@@ -57,19 +58,15 @@ module.exports = {
             })
             totalMarks = totalMarks * 100;
             const percentage = ((totalObtainedMarks / totalMarks) * 100).toFixed(2);
-            // const Total = Number(result.Nepali) + Number(result.Wonder) + Number(result.Social) + Number(result.Math) + Number(result.Science) + Number(result.Grammar)
-            // const percentage = ((Total / 600) * 100).toFixed(1);
+           
             const avgGrade = `       ${grade(percentage)}`;
 
 
-            // result.Wonder = mpgString(mpg(result.Wonder, 100));
-            // result.Nepali = mpgString(mpg(result.Nepali, 100));
-            // result.Social = mpgString(mpg(result.Social, 100));
-            // result.Math = mpgString(mpg(result.Math, 100));
-            // result.Science = mpgString(mpg(result.Science, 100));
-            // result.Grammar = mpgString(mpg(result.Grammar, 100))
+  
             const obj = {}
+            const savedObj = {}
             subjectsArray.map((subject, index) => {
+                savedObj[subject] = obtainedMarks[index]
                 if(fullMarksArray[index]!=='Grade'){
                     obj[subject] = mpgString(mpg(obtainedMarks[index], fullMarksArray[index]))
                 }else{
@@ -80,26 +77,25 @@ module.exports = {
                     })
                 }
             })
+            const newMarksheet = new marksheetModel({});
+
+            newMarksheet.Name = data.Name;
+            newMarksheet.Roll = data.Roll;
+            newMarksheet.class = data.class;
+            newMarksheet.marksInfo = savedObj;
+            
+            await newMarksheet.save();
+
             obj.Roll = data.Roll;
             obj.Name = data.Name;
             obj.Grade = avgGrade;
             obj.Total = totalObtainedMarks;
             obj["%"] = percentage;
-            // sheet.addRow(
-            //     {
-            //         Roll: data.Roll,
-            //         Name: data.Name,
-            //         Wonder: result.Wonder,
-            //         Nepali: result.Nepali,
-            //         Social: result.Social,
-            //         Math: result.Math,
-            //         Science: result.Science,
-            //         Grammar: result.Grammar,
-            //         Total: Total,
-            //         '%': percentage,
-            //         Grade: avgGrade
-            //     }
-            // );
+
+
+            
+
+           
             sheet.addRow(obj);
             res.json({
                 msg: 'Successfully Added to the marksheet'
