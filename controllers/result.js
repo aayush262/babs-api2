@@ -115,5 +115,19 @@ module.exports = {
         }catch(e){
             next(e)
         }
+    },
+    deletResultById: async(req,res,next)=>{
+       
+        try{
+           const result = await ResultModel.findOne({
+               _id: req.params.id
+           })
+           await result.remove();
+           res.json({
+               msg: 'Successfully removed'
+           })
+        }catch(e){
+            next(e)
+        }
     }
 }

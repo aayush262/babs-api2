@@ -16,7 +16,7 @@ module.exports = {
 
             await doc.loadInfo();
             const data = req.body;
-         
+
             let sheetIndex = 0;
             if (data.class === 'Nursery') {
 
@@ -52,24 +52,24 @@ module.exports = {
             subjectsArray.map((subject) => {
                 if (fullMarks[subject] === '100') {
                     totalMarks = totalMarks + 1;
-                } else if(fullMarks[subject] === '50') {
+                } else if (fullMarks[subject] === '50') {
                     totalMarks = totalMarks + 0.5
                 }
             })
             totalMarks = totalMarks * 100;
             const percentage = ((totalObtainedMarks / totalMarks) * 100).toFixed(2);
-           
+
             const avgGrade = `       ${grade(percentage)}`;
 
 
-  
+
             const obj = {}
             const savedObj = {}
             subjectsArray.map((subject, index) => {
                 savedObj[subject] = obtainedMarks[index]
-                if(fullMarksArray[index]!=='Grade'){
+                if (fullMarksArray[index] !== 'Grade') {
                     obj[subject] = mpgString(mpg(obtainedMarks[index], fullMarksArray[index]))
-                }else{
+                } else {
                     obj[subject] = mpgString({
                         obtainedMarks: `   `,
                         gradePoint: gradetoGPA(obtainedMarks[index]),
@@ -77,14 +77,29 @@ module.exports = {
                     })
                 }
             })
-            const newMarksheet = new marksheetModel({});
+            const marksheet = await MarksheetModel.findOne({
+                class: `${data.class}`,
+                Roll: `${data.Roll}`
+            })
+            if (markhseet) {
+                marksheet.Name = data.Name;
+                marksheet.Roll = data.Roll;
+                marksheet.class = data.class;
+                marksheet.marksInfo = savedObj;
+                await marksheet.save()
+            }
+            else {
+                const newMarksheet = new marksheetModel({});
 
-            newMarksheet.Name = data.Name;
-            newMarksheet.Roll = data.Roll;
-            newMarksheet.class = data.class;
-            newMarksheet.marksInfo = savedObj;
+                newMarksheet.Name = data.Name;
+                newMarksheet.Roll = data.Roll;
+                newMarksheet.class = data.class;
+                newMarksheet.marksInfo = savedObj;
+
+                await newMarksheet.save();
+            }
+
             
-            await newMarksheet.save();
 
             obj.Roll = data.Roll;
             obj.Name = data.Name;
@@ -93,9 +108,9 @@ module.exports = {
             obj["%"] = percentage;
 
 
-            
 
-           
+
+
             sheet.addRow(obj);
             res.json({
                 msg: 'Successfully Added to the marksheet'
