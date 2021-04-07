@@ -9,6 +9,10 @@ const resultSchema = new Schema({
     class: {
         type: String,
         required: true
+    },
+    Roll: {
+        type: String,
+        required: true
     }
    
 })

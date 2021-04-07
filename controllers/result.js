@@ -56,6 +56,7 @@ module.exports = {
         const AvgGrade = grade(percentage);
         const newResult = new ResultModel({});
         newResult.class= data.class
+        newResult.Roll= data.Roll
         newResult.data = {
             term: data.term,
             class: data.class,
@@ -110,6 +111,8 @@ module.exports = {
             const level = req.params.class
             const data =  await ResultModel.find({
                 class: `${level}`
+            }).sort({
+                Roll: 1
             })
             res.json(data)
         }catch(e){
