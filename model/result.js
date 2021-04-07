@@ -11,7 +11,7 @@ const resultSchema = new Schema({
         required: true
     },
     Roll: {
-        type: String,
+        type: Number,
         required: true
     }
    

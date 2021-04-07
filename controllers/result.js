@@ -56,7 +56,7 @@ module.exports = {
         const AvgGrade = grade(percentage);
         const newResult = new ResultModel({});
         newResult.class= data.class
-        newResult.Roll= data.Roll
+        newResult.Roll= +data.Roll
         newResult.data = {
             term: data.term,
             class: data.class,
