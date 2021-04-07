@@ -77,11 +77,11 @@ module.exports = {
                     })
                 }
             })
-            const marksheet = await MarksheetModel.findOne({
+            const marksheet = marksheetModel.findOne({
                 class: `${data.class}`,
                 Roll: `${data.Roll}`
             })
-            if (markhseet) {
+            if (marksheet) {
                 marksheet.Name = data.Name;
                 marksheet.Roll = data.Roll;
                 marksheet.class = data.class;
@@ -97,10 +97,8 @@ module.exports = {
                 newMarksheet.marksInfo = savedObj;
 
                 await newMarksheet.save();
+
             }
-
-            
-
             obj.Roll = data.Roll;
             obj.Name = data.Name;
             obj.Grade = avgGrade;
