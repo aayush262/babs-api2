@@ -12,6 +12,6 @@ Router.route('/:class')
    
 Router.route('/id/:id')
     .get(getSubjectById)
-    .post(editSubjectbyId);
+    .put(editSubjectbyId);
 
 module.exports= Router

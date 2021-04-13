@@ -6,6 +6,9 @@ const markSheetSchema = new Schema({
     Name: String,
     class: String,
     Roll: String,
+    percentage:{
+        type: Number
+    },
     marksInfo : Object
 })
 

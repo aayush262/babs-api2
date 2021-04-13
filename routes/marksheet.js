@@ -1,6 +1,9 @@
-const { getSheetbyClassAndRoll, getMarkSheetByClass, deleteMarkSheetBYId } = require('../controllers/marksheet');
+const { getSheetbyClassAndRoll, getMarkSheetByClass, deleteMarkSheetBYId, editMarkSheetById, postMarksheet } = require('../controllers/marksheet');
 
 const Router = require('express').Router()
+
+Router.route('/')
+    .post(postMarksheet)
 
 Router.route('/delete/:id')
     .delete(deleteMarkSheetBYId);
@@ -11,5 +14,8 @@ Router.route('/:class')
 
 Router.route('/:class/:roll')
     .get(getSheetbyClassAndRoll);
+
+Router.route('/edit/:id')
+    .put(editMarkSheetById);
 
 module.exports= Router;

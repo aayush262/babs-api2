@@ -3,7 +3,6 @@ const grade = require('../util/grade');
 const gradetoGPA = require('../util/gradetoGPA');
 const mpg = require('../util/mpg');
 const mpgString = require('../util/mpgString');
-const marksheetModel = require('./../model/marksheet');
 
 module.exports = {
     postSheet: async (req, res, next) => {
@@ -34,11 +33,11 @@ module.exports = {
             const fullMarksArray = Object.values(fullMarks);
             let obtainedMarks = [];
             subjectsArray.map((subject, index) => {
-                if (fullMarksArray[index] === 'Grade' && data.subjects[subject] === 0) {
+                if (fullMarksArray[index] === 'Grade' && data.marksInfo[subject] === 0) {
                     obtainedMarks.push('A+')
                 }
                 else {
-                    obtainedMarks.push(data.subjects[subject])
+                    obtainedMarks.push(data.marksInfo[subject])
                 }
             })
             let totalObtainedMarks = 0;
@@ -64,9 +63,7 @@ module.exports = {
 
   
             const obj = {}
-            const savedObj = {}
             subjectsArray.map((subject, index) => {
-                savedObj[subject] = obtainedMarks[index]
                 if(fullMarksArray[index]!=='Grade'){
                     obj[subject] = mpgString(mpg(obtainedMarks[index], fullMarksArray[index]))
                 }else{
@@ -77,20 +74,13 @@ module.exports = {
                     })
                 }
             })
-            const newMarksheet = new marksheetModel({});
-
-            newMarksheet.Name = data.Name;
-            newMarksheet.Roll = data.Roll;
-            newMarksheet.class = data.class;
-            newMarksheet.marksInfo = savedObj;
-            
-            await newMarksheet.save();
-
+           
             obj.Roll = data.Roll;
             obj.Name = data.Name;
             obj.Grade = avgGrade;
             obj.Total = totalObtainedMarks;
             obj["%"] = percentage;
+            obj.Rank = data.Rank;
 
 
             
