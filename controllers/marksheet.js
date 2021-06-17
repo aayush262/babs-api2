@@ -27,8 +27,8 @@ module.exports = {
             const data = await MarksheetModel.find({
                 class: `${level}`,
             }).sort({
-                percentage: -1
-            })
+                Roll: 1
+            }).collation({locale: "en_US", numericOrdering: true})
             res.json({
                 data
             })
