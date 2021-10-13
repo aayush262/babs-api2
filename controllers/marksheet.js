@@ -85,6 +85,7 @@ module.exports = {
                     totalMarks = totalMarks + 0.5
                 }
             })
+            
             totalMarks = totalMarks * 100;
             const percentage = ((totalObtainedMarks / totalMarks) * 100).toFixed(2);
             marksheet.Name = data.Name;
@@ -105,6 +106,7 @@ module.exports = {
     postMarksheet:async(req,res,next)=>{
         try{
             const data = req.body;
+            console.log(data)
             const fullMarks = data.fullMarks;
             const subjectsArray = Object.keys(fullMarks);
             const fullMarksArray = Object.values(fullMarks);
@@ -133,13 +135,15 @@ module.exports = {
                 }
             })
             totalMarks = totalMarks * 100;
+            console.log(totalMarks);
             const percentage = ((totalObtainedMarks / totalMarks) * 100).toFixed(2);
-
+            console.log(percentage)
             const savedObj = {}
+            console.log(subjectsArray)
             subjectsArray.map((subject, index) => {
                 savedObj[subject] = obtainedMarks[index]
             })
-
+            
             const newMarksheet = new MarksheetModel({});
 
             newMarksheet.Name = data.Name;
