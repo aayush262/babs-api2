@@ -65,7 +65,8 @@ module.exports = {
       subjects.forEach((subject) => {
         if (data.marksInfo[subject].fullMarks !== "Grade") {
           totalObtainedMarks +=
-            +data.marksInfo[subject].exam + +data.marksInfo[subject].test;
+            +data.marksInfo[subject].exam +
+            (data.marksInfo[subject].test ? +data.marksInfo[subject].test : 0);
           totalFullMarks += +data.marksInfo[subject].fullMarks;
         }
       });
@@ -96,7 +97,8 @@ module.exports = {
       subjects.forEach((subject) => {
         if (data.scores[subject].fullMarks !== "Grade") {
           totalObtainedMarks +=
-            +data.scores[subject].exam + +data.scores[subject].test;
+            +data.scores[subject].exam +
+            (data.scores[subject].test ? +data.scores[subject].test : 0);
           totalFullMarks += +data.scores[subject].fullMarks;
         }
       });
