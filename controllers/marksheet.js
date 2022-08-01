@@ -121,4 +121,21 @@ module.exports = {
       next(e);
     }
   },
+  addAttendanceByClassAndRoll: async (req, res, next) => {
+    try {
+      const data = req.body;
+      const marksheet = await MarksheetModel.findOne({
+        class: data.class,
+        Roll: data.roll,
+      });
+      if (data.attendance) marksheet.attendance = data.attendance;
+      const saved = await marksheet.save();
+      res.status(201).json({
+        saved,
+        msg: "Attendance Added Succesfully",
+      });
+    } catch (e) {
+      next(e);
+    }
+  },
 };
