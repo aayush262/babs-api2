@@ -6,7 +6,7 @@ module.exports = {
     },
     postLoginPage: (req,res,next)=>{
        const data=req.body
-       if(data.username === 'admin' && data.password === 'buddha'){
+       if(data.username === 'admin' && data.password === 'buddha22070'){
            res.json({
                msg: 'login success'
            })
